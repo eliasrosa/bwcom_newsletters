@@ -8,7 +8,7 @@ class bwNewsletters extends bwComponent
     var $id = 'newsletters';
     var $nome = 'Newsletters';
     var $adm_url_default = 'adm.php?com=newsletters&view=resumo';
-    var $adm_visivel = true;
+    var $adm_visivel = false;
     
     // getInstance
     function getInstance($class = false)
