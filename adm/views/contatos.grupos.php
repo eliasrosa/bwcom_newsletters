@@ -1,23 +1,33 @@
-    <div id="grupos">
-        <?       
-        
-        $form->addH2('Grupos relacionados');
-        
-        $r = bwNewsletters::getGrupos()->listar();
-        echo '<ul>';
-
-        foreach($r['dados'] as $g)
-        {
-            $id = $g['id'];
-            $nome = $g['nome'];
-            
-            $ck = isset($i['grupos'][$id]) ? 'checked="checked"' : '';
-            $disabled = $i['status'] || !$i['id'] ? '' : 'disabled="disabled"';
-            echo sprintf('<label class="w80" style="display:inline-block;"><input %s %s type="checkbox" value="%s" name="grupos[]" />%s</label>', $disabled, $ck, $id, $nome);
-        } 
- 
-        echo '</ul>';        
-
-         
-        ?>
-    </div>
+<div id="grupos">
+  <?       
+  $form->addH2('Grupos relacionados');
+  
+  $grupos = Doctrine_Query::create()
+    ->from('NewsletterGrupo g')
+    ->orderBy('g.nome ASC')
+    ->execute();
+  
+  $rel = array();
+  
+  foreach($i->Grupos as $g)
+  {
+    $rel[$g->id] = $g->id;
+  }
+  
+  if($grupos)
+  {
+    foreach($grupos as $g)
+    {
+      $sel = isset($rel[$g->id]) ? 'checked="checked"' : '';
+      
+      echo '<label class="w80" style="display:inline-block;">';
+      echo sprintf('<input %s type="checkbox" value="%s" name="dados[grupos][]" />%s',
+        $sel, $g->id, $g->nome);
+      echo '</label>';
+    } 
+  }
+  else
+    echo sprintf('<p>Nenhum grupo de contato foi encontrado!<br />Cadastre seus grupos <a href="%s">aqui!</a></p>',
+      bwRouter::_('adm.php?com=newsletters&sub=grupos&view=cadastro'));
+  ?>
+</div>

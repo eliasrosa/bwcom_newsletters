@@ -37,7 +37,6 @@ class NewsletterContato extends bwRecord
       'primary' => false,
       'notnull' => true,
       'email' => true,
-      'unique' => true,
       'autoincrement' => false,
     ));
     $this->hasColumn('datahora_adicionado', 'timestamp', null, array(
@@ -74,6 +73,28 @@ class NewsletterContato extends bwRecord
   //
   public function salvar($dados)
   {
+  
+    // verifica emails duplicados no mesmo servico
+    if(!$dados['id'])
+    {
+      $dql = Doctrine_Query::create()
+        ->from('NewsletterContato')
+        ->where('email = ?', $dados['email']);
+
+      if($dql->fetchOne())
+      {
+        return array(
+          'retorno' => false,
+          'dados' => bwUtil::array2query($dados),
+          'msg' => 'Já exite um contato com este e-mail cadastrado',
+        );
+      }
+    }
+    else
+    {
+      unset($dados['email']);
+    }
+
     // grupos
     $grupos = $dados['grupos'];
     unset($dados['grupos']);
@@ -81,6 +102,9 @@ class NewsletterContato extends bwRecord
     if(count($grupos))
     {
       $rel = array('Grupos' => $grupos);
+      
+      // data
+      $dados['datahora_adicionado'] = bwUtil::dataToMysql($dados['datahora_adicionado']);
 
       $db = bwComponent::save('NewsletterContato', $dados, 'id', $rel);
       $r = bwComponent::retorno($db);

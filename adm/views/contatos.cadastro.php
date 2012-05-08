@@ -9,10 +9,11 @@ $i = bwComponent::openById('NewsletterContato', $id);
 $form = new bwForm($i);
 $form->addH2('Dados do contato');
 $form->addInputID();
-$form->addInput('email');
+$form->addInput('email', 'text', array('edit' => false));
 $form->addInput('nome');
 $form->addInputDataHora('datahora_adicionado');
 $form->addStatus();
+$form->addCustonFile('contatos.grupos.php');
 
 $form->addBottonSalvar('salvarContato');
 $form->addBottonRemover('removerContato');
