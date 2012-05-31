@@ -1,19 +1,30 @@
-<? 
+<?
+
 defined('BW') or die("Acesso negado!");
 
-$dados = bwRequest::getVar('dados', array());
-$dados['status'] = 1;
-$dados['datahora_adicionado'] = bwUtil::dataNow();
+$nome = bwRequest::getVar('nome');
+$email = bwRequest::getVar('email');
 
-if(bwRequest::checkToken())
-{
-	$r = bwNewsletters::getInstance()->getContatos()->salvar($dados);
-	$msg = $r['retorno'] ? "O e-mail <b>{$dados['email']}</b> foi cadastrado com sucesso!" : "E-mail <b>{$dados['email']}</b> é inválido ou já está cadastrado!";
+if ($nome == 'Nome')
+    $nome = NULL;
+
+$dados = array(
+    'email' => $email,
+    'nome' => $nome,
+    'datahora_adicionado' => bwUtil::dataNow(),
+    'status' => 1,
+    'grupos' => array(1)
+);
+
+$r = NewsletterContato::salvar($dados);
+//print_r($r);
+
+if ($r['retorno']) {
+    $msg = sprintf('O e-mail <b>%s</b> foi cadastrado com sucesso!', $dados['email']);
+} else {
+    $msg = sprintf('E-mail <b>%s</b> é inválido ou já está cadastrado!', $dados['email']);
 }
-else
-	$msg = "Token inválido!";
-	
-	
+
 echo '<h1 class="tit1">Newsletter</h1>';
-echo nl2br("<p>{$msg}</p>");
+echo "<p>{$msg}</p>";
 ?>
