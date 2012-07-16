@@ -5,14 +5,12 @@ class bwGridContatos extends bwGrid
 {
     function col0($i)
     {
-        return sprintf('<a href="%s">%s</a>',
-            bwRouter::_('adm.php?com=newsletters&sub=contatos&view=cadastro&id='.$i->id), $i->id);
+        return sprintf('<a href="%s">%s</a>', $i->getUrl('/newsletters/contatos/cadastro'), $i->id);
     }
     
     function col1($i)
     {
-        return sprintf('<a href="%s">%s</a>',
-            bwRouter::_('adm.php?com=newsletters&sub=contatos&view=cadastro&id='.$i->id), $i->email);
+        return $i->email;
     }
 
     function col2($i)
@@ -50,7 +48,7 @@ class bwGridContatos extends bwGrid
 
 
 echo bwAdm::createHtmlSubMenu(0);
-echo bwButton::redirect('Criar novo contato', 'adm.php?com=newsletters&sub=contatos&view=cadastro');
+echo bwButton::redirect('Criar novo contato', '/newsletters/contatos/cadastro/0');
 new bwGridContatos();
 
 

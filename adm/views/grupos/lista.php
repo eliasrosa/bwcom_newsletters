@@ -5,14 +5,12 @@ class bwGridGrupos extends bwGrid
 {
     function col0($i)
     {
-        return sprintf('<a href="%s">%s</a>',
-            bwRouter::_('adm.php?com=newsletters&sub=grupos&view=cadastro&id='.$i->id), $i->id);
+        return sprintf('<a href="%s">%s</a>', $i->getUrl('/newsletters/grupos/cadastro'), $i->id);
     }
 
     function col1($i)
     {
-        return sprintf('<a href="%s">%s</a>',
-            bwRouter::_('adm.php?com=newsletters&sub=grupos&view=cadastro&id='.$i->id), $i->nome);
+        return $i->nome;
     }
 
     function col2($i)
@@ -47,7 +45,7 @@ class bwGridGrupos extends bwGrid
 }
 
 echo bwAdm::createHtmlSubMenu(1);
-echo bwButton::redirect('Criar novo grupo', 'adm.php?com=newsletters&sub=grupos&view=cadastro');
+echo bwButton::redirect('Criar novo grupo', '/newsletters/grupos/cadastro/0');
 new bwGridGrupos();
 
 ?>

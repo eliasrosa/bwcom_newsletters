@@ -1,5 +1,6 @@
 <?
 defined('BW') or die("Acesso negado!");
+$task = bwRequest::getVar('task');
 
 
 
@@ -15,7 +16,7 @@ if ($task == 'salvarContato')
 if ($task == 'removerContato')
 {
   $r = NewsletterContato::remover(bwRequest::getVar('dados', array()));
-  $r['redirect'] = bwRouter::_("adm.php?com=newsletters&sub=contatos&view=lista");  
+  $r['redirect'] = bwRouter::_("/newsletters/contatos/lista");  
 }
 
 
@@ -34,7 +35,7 @@ if ($task == 'salvarGrupo')
 if ($task == 'removerGrupo')
 {
   $r = NewsletterGrupo::remover(bwRequest::getVar('dados', array()));
-  $r['redirect'] = bwRouter::_("adm.php?com=newsletters&sub=grupos&view=lista");    
+  $r['redirect'] = bwRouter::_("/newsletters/grupos/lista");    
 }
 
 die(json_encode($r));
