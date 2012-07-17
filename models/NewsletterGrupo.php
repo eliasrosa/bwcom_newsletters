@@ -2,6 +2,7 @@
 
 class NewsletterGrupo extends bwRecord
 {
+
     var $labels = array(
         'nome' => 'Nome do grupo'
     );
@@ -16,7 +17,7 @@ class NewsletterGrupo extends bwRecord
             'unsigned' => false,
             'primary' => true,
             'autoincrement' => true,
-        ));        
+        ));
         $this->hasColumn('nome', 'string', 255, array(
             'type' => 'string',
             'length' => 255,
@@ -27,7 +28,16 @@ class NewsletterGrupo extends bwRecord
             'notblank' => true,
             'unique' => true,
             'autoincrement' => false,
-        ));        
+        ));
+        $this->hasColumn('status', 'integer', 4, array(
+            'type' => 'integer',
+            'length' => 4,
+            'fixed' => false,
+            'unsigned' => false,
+            'primary' => false,
+            'notnull' => true,
+            'autoincrement' => false,
+        ));
     }
 
     public function setUp()
@@ -43,32 +53,32 @@ class NewsletterGrupo extends bwRecord
 
     //
     public function salvar($dados)
-    {        
-      $db = bwComponent::save('NewsletterGrupo', $dados);
-      $r = bwComponent::retorno($db);
+    {
+        $db = bwComponent::save('NewsletterGrupo', $dados);
+        $r = bwComponent::retorno($db);
 
-      return $r;
+        return $r;
     }
 
     //
     public function remover($dados)
     {
-      // verifica se exite contato relacionados
-      $dql = Doctrine_Query::create()
-        ->from('NewsletterContato c')
-        ->innerJoin('c.Grupos g WITH g.id = ?', $dados['id']);
+        // verifica se exite contato relacionados
+        $dql = Doctrine_Query::create()
+            ->from('NewsletterContato c')
+            ->innerJoin('c.Grupos g WITH g.id = ?', $dados['id']);
 
-      if($dql->fetchOne())
-      {
-        return array(
-          'retorno' => false,
-          'msg' => 'Existem contatos cadastrados neste grupo!',
-        );
-      }     
-    
-      $db = bwComponent::remover('NewsletterGrupo', $dados);
-      $r = bwComponent::retorno($db);
+        if ($dql->fetchOne()) {
+            return array(
+                'retorno' => false,
+                'msg' => 'Existem contatos cadastrados neste grupo!',
+            );
+        }
 
-      return $r;
-    }    
+        $db = bwComponent::remover('NewsletterGrupo', $dados);
+        $r = bwComponent::retorno($db);
+
+        return $r;
+    }
+
 }

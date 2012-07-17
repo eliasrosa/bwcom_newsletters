@@ -10,6 +10,7 @@ $form = new bwForm($i, bwRouter::_('/newsletters/task'));
 $form->addH2('Dados do grupo');
 $form->addInputID();
 $form->addInput('nome');
+$form->addStatus();
 
 $form->addBottonSalvar('salvarGrupo');
 $form->addBottonRemover('removerGrupo');
